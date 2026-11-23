@@ -1,0 +1,6 @@
+# For the apps (Lore Forge, chat). For an NVIDIA GPU install torch first:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+torch>=2.1
+tokenizers>=0.15
+gradio>=4.0
+numpy

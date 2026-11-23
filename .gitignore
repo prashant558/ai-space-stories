@@ -1,0 +1,13 @@
+# model weights and downloads live in GitHub Releases, not git
+model/
+*.pt
+*.zip
+*.bin
+codex/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+kaggle.json

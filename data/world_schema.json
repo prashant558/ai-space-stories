@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "universe": {
+    "tone": "space opera with believable technology: epic stakes, alien cultures and old mysteries, but ships, stations and physics feel grounded",
+    "rules": [
+      "completely original world: never use names, species, places or terms from existing franchises",
+      "no real-world countries, politicians or religions",
+      "write in vivid, concrete sentences; show details instead of listing adjectives",
+      "always use the exact names given in the tags"
+    ],
+    "banned_terms": ["Jedi", "Sith", "Wookiee", "Tatooine", "Death Star", "Starfleet", "Klingon", "Vulcan", "Romulan",
+                     "Borg", "Dalek", "TARDIS", "Mandalorian", "Xenomorph", "Zerg", "Protoss", "Covenant", "Spartan-117",
+                     "Arrakis", "Fremen", "Mass Effect", "Normandy", "Enterprise", "Millennium Falcon", "Cylon", "Wraith"]
+  },
+  "lengths": {"short": [60, 110], "medium": [110, 180]},
+  "type_weights": {"planet": 15, "ship_log": 14, "faction": 12, "species": 12, "character": 12, "quest_hook": 12,
+                   "station": 9, "artifact": 8, "star_system": 6},
+  "link_probability": 0.4,
+  "types": {
+    "planet": {
+      "description": "a single planet or moon, its surface, atmosphere and what makes it memorable",
+      "name_style": "planet",
+      "fields": {
+        "climate": ["ice", "desert", "ocean", "jungle", "volcanic", "toxic", "gas giant", "barren rock", "tidally locked", "temperate"],
+        "size": ["small", "medium", "large", "giant"],
+        "life": ["none", "microbial", "primitive", "complex", "intelligent"],
+        "danger": ["low", "medium", "high", "extreme"],
+        "feature": ["ancient ruins", "floating islands", "crystal forests", "endless storms", "planetary rings", "twin moons",
+                    "underground oceans", "abandoned colony", "deep mining scars", "a strange repeating signal"],
+        "mood": ["mysterious", "hopeful", "eerie", "majestic", "desolate", "hostile", "peaceful", "melancholic"]
+      },
+      "optional": ["feature"],
+      "links": {"located_in": "star_system"},
+      "rules": [{"if": {"climate": "gas giant"}, "then": {"size": ["large", "giant"]}},
+                {"if": {"climate": "gas giant"}, "then": {"life": ["none", "microbial", "complex"]}},
+                {"if": {"climate": "barren rock"}, "then": {"life": ["none", "microbial"]}}]
+    },
+    "star_system": {
+      "description": "a star system: its star, its worlds and its place in the galaxy",
+      "name_style": "system",
+      "fields": {
+        "star": ["red dwarf", "yellow star", "blue giant", "white dwarf", "neutron star", "binary stars", "black hole"],
+        "planet_count": ["2", "3", "4", "5", "6", "7", "8"],
+        "status": ["uncharted", "colonized", "contested", "abandoned", "quarantined", "trade hub"],
+        "mood": ["mysterious", "hopeful", "eerie", "majestic", "desolate", "hostile", "peaceful"]
+      },
+      "optional": [],
+      "links": {},
+      "rules": []
+    },
+    "faction": {
+      "description": "a political, commercial or cultural power: who they are, what they want and how they act",
+      "name_style": "faction",
+      "fields": {
+        "kind": ["empire", "corporation", "rebel movement", "religious order", "pirate clan", "scientific guild", "nomad fleet", "AI collective"],
+        "goal": ["expansion", "profit", "freedom", "knowledge", "survival", "revenge", "preserving tradition"],
+        "methods": ["diplomacy", "trade", "military force", "espionage", "advanced technology", "faith"],
+        "alignment": ["benevolent", "neutral", "ruthless", "secretive"],
+        "mood": ["grand", "ominous", "hopeful", "tense", "mysterious"]
+      },
+      "optional": [],
+      "links": {"homeworld": "planet"},
+      "rules": [{"if": {"kind": "pirate clan"}, "then": {"alignment": ["neutral", "ruthless", "secretive"]}}]
+    },
+    "species": {
+      "description": "an alien species: body, home environment, society and one thing that makes them unforgettable",
+      "name_style": "species",
+      "fields": {
+        "body": ["humanoid", "insectoid", "aquatic", "crystalline", "gaseous", "plant-like", "reptilian", "machine"],
+        "habitat": ["ice", "desert", "ocean", "jungle", "volcanic", "toxic", "gas giant", "space itself"],
+        "society": ["hive mind", "tribal", "technocratic", "nomadic", "theocratic", "democratic"],
+        "temperament": ["peaceful", "curious", "aggressive", "isolationist", "trade-loving"],
+        "unique_trait": ["telepathy", "very long lifespans", "photosynthesis", "shape-shifting", "communicates with light",
+                         "no concept of individuality", "speaks only in music", "remembers the lives of their ancestors"],
+        "mood": ["wondrous", "eerie", "noble", "unsettling", "gentle"]
+      },
+      "optional": [],
+      "links": {"homeworld": "planet"},
+      "rules": [{"if": {"body": "aquatic"}, "then": {"habitat": ["ocean", "ice", "gas giant"]}},
+                {"if": {"society": "hive mind"}, "then": {"unique_trait": ["telepathy", "no concept of individuality", "communicates with light", "photosynthesis"]}}]
+    },
+    "ship_log": {
+      "description": "a first-person log entry from a ship's captain or crew member",
+      "name_style": "ship",
+      "fields": {
+        "author": "@character",
+        "situation": ["engine failure", "first contact", "pirate ambush", "discovering a derelict ship", "a mysterious illness aboard",
+                      "a navigation error near a black hole", "a smuggling run", "a rescue mission", "rumours of mutiny",
+                      "landing on an unknown planet"],
+        "day": "@int:1:400",
+        "mood": ["tense", "calm", "desperate", "curious", "triumphant", "eerie", "exhausted"]
+      },
+      "optional": [],
+      "links": {},
+      "rules": [{"if": {"situation": "a smuggling run"}, "then": {"mood": ["tense", "calm", "curious", "triumphant"]}}]
+    },
+    "artifact": {
+      "description": "a strange object: what it looks like, where it came from and what people believe it does",
+      "name_style": "artifact",
+      "fields": {
+        "origin": ["an ancient vanished civilization", "unknown", "a faction's secret lab", "alien", "a rogue AI"],
+        "material": ["dark metal", "living crystal", "bone", "solid light", "carved stone", "an unknown alloy"],
+        "power": ["none known", "endless energy", "long-range communication", "bending time", "healing", "destruction",
+                  "navigation through deep space", "storing memories"],
+        "condition": ["pristine", "damaged", "fragmented", "dormant", "active"],
+        "mood": ["mysterious", "ominous", "wondrous", "sacred"]
+      },
+      "optional": [],
+      "links": {"found_on": "planet"},
+      "rules": [{"if": {"power": "none known"}, "then": {"condition": ["pristine", "damaged", "fragmented", "dormant"]}}]
+    },
+    "character": {
+      "description": "a person in the galaxy: background, personality, how they look and what drives them",
+      "name_style": "person",
+      "fields": {
+        "role": ["starship captain", "smuggler", "scientist", "diplomat", "mercenary", "engineer", "priest", "explorer",
+                 "bounty hunter", "AI companion"],
+        "personality": ["brave", "cynical", "kind", "ambitious", "secretive", "reckless", "wise", "cheerful"],
+        "secret": ["a hidden past", "is a double agent", "owes a dangerous debt", "is searching for a lost sibling",
+                   "is the last of their kind", "carries a forbidden artifact"],
+        "mood": ["warm", "gritty", "tragic", "adventurous", "mysterious"]
+      },
+      "optional": ["secret"],
+      "links": {"affiliation": "faction"},
+      "rules": []
+    },
+    "quest_hook": {
+      "description": "the opening of a mission a player could accept: the situation, the ask, and a reason to care",
+      "name_style": "quest",
+      "fields": {
+        "kind": ["rescue", "delivery", "investigation", "escort", "salvage", "sabotage", "exploration", "negotiation"],
+        "location": ["a planet", "a space station", "an asteroid field", "a derelict ship", "a nebula"],
+        "danger": ["low", "medium", "high", "extreme"],
+        "reward": ["credits", "a ship upgrade", "a rare artifact", "secret information", "an alliance", "a pardon"],
+        "twist": ["the client is lying", "the target is innocent", "a rival crew is also hunting", "the cargo is alive",
+                  "it is a trap", "time is running out"],
+        "mood": ["tense", "adventurous", "mysterious", "grim", "urgent"]
+      },
+      "optional": ["twist"],
+      "links": {"giver": "character"},
+      "rules": [{"if": {"danger": "low"}, "then": {"mood": ["adventurous", "mysterious", "urgent"]}}]
+    },
+    "station": {
+      "description": "a space station: what it is for, who lives there and what it feels like to arrive",
+      "name_style": "station",
+      "fields": {
+        "kind": ["trade hub", "research outpost", "military fortress", "mining station", "pirate haven", "refugee shelter", "derelict"],
+        "population": ["none", "tiny", "small", "large", "huge"],
+        "location": ["orbiting a gas giant", "carved into an asteroid", "at the edge of a black hole", "drifting in deep space",
+                     "hidden inside a nebula"],
+        "condition": ["thriving", "run-down", "under siege", "abandoned", "recently rebuilt"],
+        "mood": ["bustling", "eerie", "tense", "hopeful", "grim"]
+      },
+      "optional": [],
+      "links": {"located_in": "star_system"},
+      "rules": [{"if": {"kind": "derelict"}, "then": {"population": ["none"]}},
+                {"if": {"kind": "derelict"}, "then": {"condition": ["abandoned"]}},
+                {"if": {"population": "none"}, "then": {"condition": ["abandoned"]}}]
+    }
+  },
+  "names": {
+    "syllables_start": ["Ve", "Kar", "Thal", "Or", "Zy", "Mor", "Ael", "Qua", "Dren", "Syl", "Ix", "Bel", "Cor", "Na", "Vol",
+                        "Hes", "Tor", "Ul", "Ry", "Esk", "Lun", "Pra", "Gav", "Ser", "Ky"],
+    "syllables_mid": ["ra", "ri", "on", "el", "ae", "us", "an", "or", "is", "ul", "e", "i", "ar", "en", "yl"],
+    "syllables_end": ["th", "x", "n", "s", "ra", "ia", "on", "ar", "is", "ek", "um", "ae", "or", "ix", "a"],
+    "planet_suffix": ["", "", "", " Prime", " IV", " II", "-7", " Minor", " Secundus", "-3b"],
+    "system_prefix": ["", "", "the ", "the "],
+    "system_suffix": [" System", " Reach", " Expanse", " Cluster", ""],
+    "faction_pattern": ["the {N} Concord", "the {N} Syndicate", "the Order of {N}", "the {N} Free Fleet", "the {N} Dominion",
+                        "the Children of {N}", "{N} Dynamics", "the {N} Collective", "the Shroud of {N}", "the {N} Compact"],
+    "ship_pattern": ["The {A} {B}", "{N}'s {B}", "The {B} of {N}", "The {A} {B}"],
+    "ship_words_a": ["Long", "Silent", "Last", "Burning", "Wandering", "Iron", "Pale", "Distant", "Restless", "Hollow"],
+    "ship_words_b": ["Quiet", "Promise", "Horizon", "Ember", "Wake", "Lantern", "Tide", "Verdict", "Echo", "Gambit"],
+    "artifact_pattern": ["the {N} Shard", "the Crown of {N}", "the {N} Lens", "the Heart of {N}", "the {N} Codex",
+                         "the Seventh {B}", "the {N} Engine", "the Mirror of {N}"],
+    "station_pattern": ["{N} Station", "Outpost {N}", "{N} Spire", "Haven {N}", "{N} Deep", "the {N} Ring", "Bastion {N}"],
+    "quest_pattern": ["The {A} {B}", "Shadows over {N}", "The {N} Job", "Echoes of {N}", "Last Call at {N}", "The {N} Signal"],
+    "first_names": ["Mara", "Idris", "Kael", "Soren", "Nyra", "Tobin", "Elia", "Rook", "Vesna", "Oren", "Lio", "Asha",
+                    "Dax", "Imre", "Tamsin", "Kito", "Yara", "Bram", "Selin", "Joss", "Nadia", "Pell", "Ruan", "Zia"],
+    "ai_names": ["ECHO", "VANTA", "MERIDIAN", "LUMEN", "ORACLE-9", "HALCYON", "TESSER", "NIMBUS"]
+  }
+}
